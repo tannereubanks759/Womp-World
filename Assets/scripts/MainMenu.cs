@@ -16,9 +16,9 @@ public class MainMenu : MonoBehaviour
     {
         
     }
-    public void Play()
+    public void Play(string sceneName)
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene(sceneName);
     }
     public void Quit()
     {

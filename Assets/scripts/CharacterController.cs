@@ -8,20 +8,20 @@ using UnityEngine.SceneManagement;
 public class CharacterController : MonoBehaviour
 {
     private Rigidbody2D rb2D;
-
     private float moveSpeed, jumpForce, moveHorizontal, moveVertical;
     private bool isJumping;
     private bool isRunning;
 
-    public LayerMask spikeLayer;
+    public GameObject DeathMenu;
+    public GameObject PauseMenu;
     // Start is called before the first frame update
     void Start()
     {
         rb2D = gameObject.GetComponent<Rigidbody2D>();
-
         moveSpeed = 2f;
         jumpForce = 40f;
         isJumping = false;
+        Time.timeScale = 1f;
     }
 
     // Update is called once per frame
@@ -29,10 +29,21 @@ public class CharacterController : MonoBehaviour
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveVertical = Input.GetAxisRaw("Vertical");
-
         Vector2 position = transform.position;
         Vector2 direction =  Vector2.down;
-        
+
+        //this text is for pausing the game
+        if (Input.GetKeyDown("escape") && Time.timeScale != 0)
+        {
+            Time.timeScale = 0f;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            PauseMenu.SetActive(true);
+        }
+
+
+
+
     }
     void FixedUpdate()
     {
@@ -61,10 +72,7 @@ public class CharacterController : MonoBehaviour
         {
             moveSpeed = 2f;
         }
-
-        RayCastSpikeDetection();
         
-
     } 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -73,28 +81,22 @@ public class CharacterController : MonoBehaviour
             isJumping = false;
             isRunning = false;
         }
-        
+        if(collider.gameObject.tag == "spikes")
+        {
+            die();
+        }
     }
     private void OnTriggerExit2D()
     {
         isJumping = true;
         isRunning = true;
     }
-    public void Die()
+    public void die()
     {
-        Debug.Log("character has died");
-        
-    }
-    private void RayCastSpikeDetection()
-    {
-        Debug.DrawRay(transform.position, -Vector3.up * 10, Color.white, 0);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 10, LayerMask.GetMask("spikes"));
-        if(hit.collider != null)
-        {
-            if(hit.collider.tag == "spikes")
-            {
-                Debug.Log("died");
-            }
-        }
+        Time.timeScale = 0f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        DeathMenu.SetActive(true);
+        Debug.Log("Player Has Died");
     }
 }
