@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
     public ParticleSystem endParticle;
     public GameObject player;
     public Vector3 playerPos;
+    public Animator anim;
+    public AudioClip concrete;
+    public AudioSource source;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +23,13 @@ public class GameManager : MonoBehaviour
         if (playerPos.x >= 113.7 && endParticle.isPlaying == false)
         {
             StartCoroutine(EndGame());
+        }
+
+        if (player.transform.position.x > 111f)
+        {
+            anim.SetBool("isShut", true);
+            source.clip = concrete;
+            source.PlayOneShot(concrete, .04f);
         }
     }
     IEnumerator EndGame()

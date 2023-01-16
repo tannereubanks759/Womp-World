@@ -11,6 +11,9 @@ public class weapon : MonoBehaviour
 
     private bool lookingLeft;
     private float moveHorizontal;
+
+    public AudioClip weaponClip;
+    public AudioSource source;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +38,8 @@ public class weapon : MonoBehaviour
         if (Input.GetButtonDown("Jump") && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
+            source.clip = weaponClip;
+            source.Play();
             StartCoroutine(duration());
         }
         

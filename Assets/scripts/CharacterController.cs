@@ -10,13 +10,13 @@ public class CharacterController : MonoBehaviour
     private Rigidbody2D rb2D;
     private float moveSpeed, jumpForce, moveHorizontal, moveVertical;
     private bool isJumping;
-    private bool isRunning;
+    
 
     public GameObject DeathMenu;
     public GameObject PauseMenu;
 
     public GameObject camera;
-    
+    public AudioClip weaponClip;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +44,15 @@ public class CharacterController : MonoBehaviour
             PauseMenu.SetActive(true);
         }
         camera.transform.position = new Vector3(this.transform.position.x, 0, -10);
+        
+        if(isJumping == true)
+        {
+            moveSpeed = 1f;
+        }
+        else
+        {
+            moveSpeed = 2f;
+        }
     }
     void FixedUpdate()
     {
@@ -64,14 +73,6 @@ public class CharacterController : MonoBehaviour
         {
             this.transform.localScale = new Vector3(1, 2, 0);
         }
-        if (isRunning == true)
-        {
-            moveSpeed = 1f;
-        }
-        else
-        {
-            moveSpeed = 2f;
-        }
         
     } 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -79,7 +80,7 @@ public class CharacterController : MonoBehaviour
         if(collider.gameObject.tag == "Platform")
         {
             isJumping = false;
-            isRunning = false;
+            
         }
         if(collider.gameObject.tag == "spikes" || collider.gameObject.tag == "enemy")
         {
@@ -88,8 +89,11 @@ public class CharacterController : MonoBehaviour
     }
     private void OnTriggerExit2D()
     {
-        isJumping = true;
-        isRunning = true;
+        if(isJumping != true)
+        {
+            isJumping = true;
+        }
+        
     }
     public void die()
     {
@@ -99,4 +103,5 @@ public class CharacterController : MonoBehaviour
         DeathMenu.SetActive(true);
         Debug.Log("Player Has Died");
     }
+
 }
