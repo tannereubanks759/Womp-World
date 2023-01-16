@@ -6,17 +6,20 @@ TagManager:
   tags:
   - Platform
   - spikes
+  - Wall
+  - enemy
+  - weapon
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - spikes
-  - 
-  - 
-  - 
+  - walls
+  - weapon
+  - enemy
   - 
   - 
   - 

@@ -14,6 +14,9 @@ public class CharacterController : MonoBehaviour
 
     public GameObject DeathMenu;
     public GameObject PauseMenu;
+
+    public GameObject camera;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -40,10 +43,7 @@ public class CharacterController : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             PauseMenu.SetActive(true);
         }
-
-
-
-
+        camera.transform.position = new Vector3(this.transform.position.x, 0, -10);
     }
     void FixedUpdate()
     {
@@ -56,7 +56,7 @@ public class CharacterController : MonoBehaviour
             rb2D.AddForce(new Vector2(0f, moveVertical * jumpForce), ForceMode2D.Impulse);
 
         }
-        if (moveVertical < -.1f)
+        if (moveVertical < -.1f || (this.transform.position.x > 70.5 && this.transform.position.y > 4.3) || (this.transform.position.x > 109f && this.transform.position.x < 113.7f))
         {
             this.transform.localScale = new Vector3(1, 1, 0);
         }
@@ -81,7 +81,7 @@ public class CharacterController : MonoBehaviour
             isJumping = false;
             isRunning = false;
         }
-        if(collider.gameObject.tag == "spikes")
+        if(collider.gameObject.tag == "spikes" || collider.gameObject.tag == "enemy")
         {
             die();
         }
