@@ -12,12 +12,17 @@ public class UIScript : MonoBehaviour
     void Start()
     {
         scene = SceneManager.GetActiveScene();
-        if(scene.name != "Main Menu")
+        if(scene.name != "Main Menu" && scene.name != "Tutorial" && scene.name != "End")
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             DeathMenu.SetActive(false);
             PauseMenu.SetActive(false);
+        }
+        else
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
         
     }

@@ -17,6 +17,10 @@ public class CharacterController : MonoBehaviour
 
     public GameObject camera;
     public AudioClip weaponClip;
+
+    public SpriteRenderer sprite;
+
+    public Animator anim;
     // Start is called before the first frame update
     void Start()
     {
@@ -58,7 +62,21 @@ public class CharacterController : MonoBehaviour
     {
         if ((moveHorizontal > 0.1f || moveHorizontal < -.1f))
         {
+            anim.SetBool("isWalking", true);
+            if(moveHorizontal > .1f)
+            {
+                sprite.flipX = false;
+            }
+            else if (moveHorizontal < -.1f)
+            {
+                sprite.flipX = true;
+            }
+            
             rb2D.AddForce(new Vector2(moveHorizontal * moveSpeed, 0f), ForceMode2D.Impulse);
+        }
+        else
+        {
+            anim.SetBool("isWalking", false);
         }
         if (moveVertical > 0.1f && isJumping != true)
         {
@@ -67,11 +85,11 @@ public class CharacterController : MonoBehaviour
         }
         if (moveVertical < -.1f || (this.transform.position.x > 70.5 && this.transform.position.y > 4.3) || (this.transform.position.x > 109f && this.transform.position.x < 113.7f))
         {
-            this.transform.localScale = new Vector3(1, 1, 0);
+            this.transform.localScale = new Vector3(1, .5f, 0);
         }
         else
         {
-            this.transform.localScale = new Vector3(1, 2, 0);
+            this.transform.localScale = new Vector3(1, 1, 0);
         }
         
     } 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public ParticleSystem endParticle;
@@ -10,27 +11,60 @@ public class GameManager : MonoBehaviour
     public Animator anim;
     public AudioClip concrete;
     public AudioSource source;
+    public AudioSource musicSource;
+    public AudioClip musicClip;
+    public Slider musicVolume;
+
+    
+    public static float volume;
     // Start is called before the first frame update
     void Start()
     {
+        
+        if (this.gameObject.tag == "music" && GameObject.FindGameObjectsWithTag("music").Length < 2)
+        {
+            musicSource.clip = musicClip;
+            musicSource.Play();
+            DontDestroyOnLoad(this.gameObject);
+            volume = musicVolume.value;
+            musicSource.volume = volume;
+        }
+        else
+        {
+            volume = 1f;
+        }
+
+        
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerPos = player.transform.position;
-        if (playerPos.x >= 113.7 && endParticle.isPlaying == false)
+        if (this.gameObject.tag != "music")
         {
-            StartCoroutine(EndGame());
-        }
+            playerPos = player.transform.position;
+            if (playerPos.x >= 113.7 && endParticle.isPlaying == false)
+            {
+                StartCoroutine(EndGame());
+            }
 
-        if (player.transform.position.x > 111f)
-        {
-            anim.SetBool("isShut", true);
-            source.clip = concrete;
-            source.PlayOneShot(concrete, .04f);
+            if (player.transform.position.x > 111f)
+            {
+                anim.SetBool("isShut", true);
+                source.clip = concrete;
+                source.PlayOneShot(concrete, .04f);
+            }
         }
+        if(this.gameObject.tag == "music")
+        {
+            if(musicVolume.value != volume)
+            {
+                musicSource.volume = volume;
+            }
+        }
+        
+
     }
     IEnumerator EndGame()
     {
@@ -38,5 +72,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(5);
         SceneManager.LoadScene("End");
     }
+    
+
     
 }

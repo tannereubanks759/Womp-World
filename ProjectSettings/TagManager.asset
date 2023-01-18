@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - enemy
   - weapon
+  - music
   layers:
   - Default
   - TransparentFX
