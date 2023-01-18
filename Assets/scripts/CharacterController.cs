@@ -10,16 +10,11 @@ public class CharacterController : MonoBehaviour
     private Rigidbody2D rb2D;
     private float moveSpeed, jumpForce, moveHorizontal, moveVertical;
     private bool isJumping;
-    
-
     public GameObject DeathMenu;
     public GameObject PauseMenu;
-
     public GameObject camera;
     public AudioClip weaponClip;
-
     public SpriteRenderer sprite;
-
     public Animator anim;
     // Start is called before the first frame update
     void Start()
@@ -30,7 +25,6 @@ public class CharacterController : MonoBehaviour
         isJumping = false;
         Time.timeScale = 1f;
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -38,7 +32,6 @@ public class CharacterController : MonoBehaviour
         moveVertical = Input.GetAxisRaw("Vertical");
         Vector2 position = transform.position;
         Vector2 direction =  Vector2.down;
-
         //this text is for pausing the game
         if (Input.GetKeyDown("escape") && Time.timeScale != 0)
         {
@@ -71,7 +64,6 @@ public class CharacterController : MonoBehaviour
             {
                 sprite.flipX = true;
             }
-            
             rb2D.AddForce(new Vector2(moveHorizontal * moveSpeed, 0f), ForceMode2D.Impulse);
         }
         else
@@ -81,7 +73,6 @@ public class CharacterController : MonoBehaviour
         if (moveVertical > 0.1f && isJumping != true)
         {
             rb2D.AddForce(new Vector2(0f, moveVertical * jumpForce), ForceMode2D.Impulse);
-
         }
         if (moveVertical < -.1f || (this.transform.position.x > 70.5 && this.transform.position.y > 4.3) || (this.transform.position.x > 109f && this.transform.position.x < 113.7f))
         {
@@ -91,7 +82,6 @@ public class CharacterController : MonoBehaviour
         {
             this.transform.localScale = new Vector3(1, 1, 0);
         }
-        
     } 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -111,7 +101,6 @@ public class CharacterController : MonoBehaviour
         {
             isJumping = true;
         }
-        
     }
     public void die()
     {
@@ -121,5 +110,4 @@ public class CharacterController : MonoBehaviour
         DeathMenu.SetActive(true);
         Debug.Log("Player Has Died");
     }
-
 }

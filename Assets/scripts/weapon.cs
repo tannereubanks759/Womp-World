@@ -8,10 +8,8 @@ public class weapon : MonoBehaviour
     public GameObject itemsPos;
     public float fireRate;
     private float nextFire;
-
     private bool lookingLeft;
     private float moveHorizontal;
-
     public AudioClip weaponClip;
     public AudioSource source;
     // Start is called before the first frame update
@@ -42,7 +40,6 @@ public class weapon : MonoBehaviour
             source.Play();
             StartCoroutine(duration());
         }
-        
     }
     private IEnumerator duration()
     {
@@ -51,14 +48,12 @@ public class weapon : MonoBehaviour
             this.transform.position = player.transform.position + new Vector3(1, 0, 0);
             yield return new WaitForSeconds(.07f);
             this.transform.position = itemsPos.transform.position;
-            
         }
         if(lookingLeft == true)
         {
             this.transform.position = player.transform.position + new Vector3(-1, 0, 0);
             yield return new WaitForSeconds(.07f);
             this.transform.position = itemsPos.transform.position;
-            
         }
 
     }

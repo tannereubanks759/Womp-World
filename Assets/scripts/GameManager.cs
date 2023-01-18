@@ -14,13 +14,11 @@ public class GameManager : MonoBehaviour
     public AudioSource musicSource;
     public AudioClip musicClip;
     public Slider musicVolume;
-
-    
+    private GameObject[] objects;
     public static float volume;
     // Start is called before the first frame update
     void Start()
     {
-        
         if (this.gameObject.tag == "music" && GameObject.FindGameObjectsWithTag("music").Length < 2)
         {
             musicSource.clip = musicClip;
@@ -33,22 +31,22 @@ public class GameManager : MonoBehaviour
         {
             volume = 1f;
         }
-
-        
-        
+        if (this.gameObject.tag == "post")
+        {
+            DontDestroyOnLoad(this.gameObject);
+        }
+        objects = GameObject.FindGameObjectsWithTag("music");
     }
-
     // Update is called once per frame
     void Update()
     {
-        if (this.gameObject.tag != "music")
+        if (this.gameObject.tag != "music" && this.gameObject.tag != "post")
         {
             playerPos = player.transform.position;
             if (playerPos.x >= 113.7 && endParticle.isPlaying == false)
             {
                 StartCoroutine(EndGame());
             }
-
             if (player.transform.position.x > 111f)
             {
                 anim.SetBool("isShut", true);
@@ -63,8 +61,6 @@ public class GameManager : MonoBehaviour
                 musicSource.volume = volume;
             }
         }
-        
-
     }
     IEnumerator EndGame()
     {
@@ -72,7 +68,4 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(5);
         SceneManager.LoadScene("End");
     }
-    
-
-    
 }

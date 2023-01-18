@@ -10,6 +10,7 @@ TagManager:
   - enemy
   - weapon
   - music
+  - post
   layers:
   - Default
   - TransparentFX
