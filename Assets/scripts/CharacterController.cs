@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 //used "https://www.youtube.com/watch?v=1tuQqm3gQBI&ab_channel=DaniKrossing" for character controller and added my own features to it.
 
 
@@ -16,6 +17,11 @@ public class CharacterController : MonoBehaviour
     public AudioClip weaponClip;
     public SpriteRenderer sprite;
     public Animator anim;
+    public int health;
+    public GameObject heart1;
+    public GameObject heart2;
+    private float nextInvincible;
+    private float fireRate = 1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +30,9 @@ public class CharacterController : MonoBehaviour
         jumpForce = 40f;
         isJumping = false;
         Time.timeScale = 1f;
+        health = 2;
+        heart1.SetActive(true);
+        heart2.SetActive(true);
     }
     // Update is called once per frame
     void Update()
@@ -85,19 +94,30 @@ public class CharacterController : MonoBehaviour
     } 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collider.gameObject.tag == "Platform")
+        if(collider.gameObject.tag == "Platform" || collider.gameObject.tag == "spikes")
         {
             isJumping = false;
             
         }
-        if(collider.gameObject.tag == "spikes" || collider.gameObject.tag == "enemy")
+        if (collider.gameObject.tag == "spikes" || collider.gameObject.tag == "enemy")
         {
-            die();
+            if (Time.time > nextInvincible) {
+                nextInvincible = Time.time + fireRate;
+                StartCoroutine(colorChange());
+                health -= 1;
+                heart2.SetActive(false);
+                if (health < 1) {
+                    heart1.SetActive(false);
+                    die();
+                }
+            }
+            
         }
+        
     }
-    private void OnTriggerExit2D()
+    private void OnTriggerExit2D(Collider2D collider)
     {
-        if(isJumping != true)
+        if(collider.gameObject.tag != "enemy")
         {
             isJumping = true;
         }
@@ -109,5 +129,11 @@ public class CharacterController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         DeathMenu.SetActive(true);
         Debug.Log("Player Has Died");
+    }
+    IEnumerator colorChange()
+    {
+        sprite.color = Color.red;
+        yield return new WaitForSeconds(.5f);
+        sprite.color = Color.white;
     }
 }

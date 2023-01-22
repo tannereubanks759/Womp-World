@@ -11,6 +11,8 @@ TagManager:
   - weapon
   - music
   - post
+  - gate
+  - empty
   layers:
   - Default
   - TransparentFX

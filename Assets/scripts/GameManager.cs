@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     public Slider musicVolume;
     private GameObject[] objects;
     public static float volume;
+    public AudioSource concreteSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,13 +47,14 @@ public class GameManager : MonoBehaviour
             playerPos = player.transform.position;
             if (playerPos.x >= 113.7 && endParticle.isPlaying == false)
             {
+                
                 StartCoroutine(EndGame());
             }
-            if (player.transform.position.x > 111f)
+            if (player.transform.position.x > 111f && this.gameObject.tag == "gate")
             {
                 anim.SetBool("isShut", true);
-                source.clip = concrete;
-                source.PlayOneShot(concrete, .04f);
+                concreteSource.PlayOneShot(concrete, .04f);
+                
             }
         }
         if(this.gameObject.tag == "music")
@@ -61,9 +64,14 @@ public class GameManager : MonoBehaviour
                 musicSource.volume = volume;
             }
         }
+        if(playerPos.x >= 113.7)
+        {
+            this.gameObject.tag = "empty";
+        }
     }
     IEnumerator EndGame()
     {
+        
         endParticle.Play();
         yield return new WaitForSeconds(5);
         SceneManager.LoadScene("End");
