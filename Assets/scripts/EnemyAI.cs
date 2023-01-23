@@ -9,8 +9,8 @@ public class EnemyAI : MonoBehaviour
     private Rigidbody2D rb;
     private bool facingRight = false;
     private Vector3 localScale;
-    public SpriteRenderer sprite;
-    public bool isFlipped;
+
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -18,14 +18,12 @@ public class EnemyAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         dirx = -1f;
         moveSpeed = 3f;
-        isFlipped = false;
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Wall")
         {
-            isFlipped = !isFlipped;
-            sprite.flipX = isFlipped;
             dirx *= -1f;
         }
         if (collision.gameObject.tag == "weapon")
